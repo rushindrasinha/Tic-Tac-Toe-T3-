@@ -1,0 +1,115 @@
+/*==========================RS
+Custom CSS Page by Rushi Sinha
+RS==========================*/
+
+
+
+
+
+
+
+/*====================RS
+General CSS For the Page
+RS====================*/
+
+
+body {
+	margin: 0 auto;
+	width: 720px;
+	background-image: url("../assets/bg.jpg");
+	color: white;
+}
+
+a {
+	margin: 0 auto;
+	text-align: center;
+}
+
+
+h1 {
+	font-size: 54px;
+	text-align: center;
+	color: #64B5F6;
+}
+
+
+/*======================================RS
+ID Specific CSS for Rules Text Show / Hide
+RS======================================*/
+
+#show:hover {
+	color: black;
+}
+
+#show {
+	color: white;
+	text-decoration: none;
+}
+
+#r1_a:hover {
+	color: gray;
+}
+
+
+#r1_a {
+	text-decoration: none;
+	color: white;
+}
+
+/*=====================RS
+CSS for the Container Div
+RS=====================*/
+
+
+#container {
+	margin: 0 auto;
+	text-align: center;
+	width: 464px;
+	height: 456px;
+}
+
+
+/*===================RS
+Styling for the Squares
+RS===================*/
+
+.slot {
+	display: inline-block;
+	width: 150px;
+	height: 150px;
+	border: 1px solid #CDDC39;
+	margin: 0 auto;
+	background-color: transparent;
+	vertical-align: top;
+	font-size: 170px;
+	font-weight: bold;
+	color: #64FFDA;
+}
+
+/*=========RS
+Score Styling
+RS=========*/
+
+
+.score {
+	font-weight: bold;
+	font-size: 28px;
+	color: #A5D6A7;
+	margin: 50px;
+	text-align: center;
+	display: inline;
+}
+
+#oScore {
+	color: #E64A19 ;
+}
+
+#xScore {
+	color: #E64A19;
+}
+
+
+
+/*======RS
+End of CSS
+RS======*/
