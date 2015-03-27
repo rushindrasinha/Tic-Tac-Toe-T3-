@@ -1,4 +1,4 @@
-#This is the GitHub Repo for GA Project 01 [Tic Tac Toe]
+#This is the GitHub Repo for GA Project 01 [Tic Tac Toe / T3]
 
 
 ---
