@@ -82,7 +82,7 @@ RS===================================================================-->
 
 
 
-		<div class="animated slots" ng-repeat="slot in tcon.slots" ng-click="tcon.makeMove($index)" ng-class='{slots: tcon.number, alli: slot.allianceSlot, horde: slot.hordeSlot }' >
+		<div class="animated slots" ng-repeat="slot in tcon.syncWithFirebase.slots" ng-click="tcon.makeMove(slot)" ng-class='{slots: tcon.number, alli: slot.allianceSlot, horde: slot.hordeSlot }' >
 
 
 
@@ -99,9 +99,9 @@ Below are the Div tags for Showing and Tracking the Number of Wins
 RS=============================================================-->
 
 	<div class="lineUp">
-		<div class="score-left">Alliance Wins : <span id='xScore'>{{tcon.allianceScore}}</span></div>
-		<button id='playAgain'>Play Again</button> 
-		<div class="score-right">Horde Wins : <span id='oScore'>{{tcon.hordeScore}}</span></div>
+		<div class="score-left">Alliance Wins : <span id='xScore'>{{tcon.syncWithFirebase.allianceScore}}</span></div>
+		<button ng-click='tcon.playAgain()' id='playAgain'>Play Again</button> 
+		<div class="score-right">Horde Wins : <span id='oScore'>{{tcon.syncWithFirebase.hordeScore}}</span></div>
 		<hr>
 		<br>
 		<div class='radio'>

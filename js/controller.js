@@ -16,12 +16,14 @@ angular
 			self.hordeScore = 0;
 			// self.playerOne;
 			// self.playerTwo;
+			self.syncWithFirebase = syncWithFirebase();
 			self.getWinner = getWinner;
 			self.counter = 0;
 			self.text;
 			self.newTodo;
 			self.chatter = chatter;
 			self.chatLog = getChat();
+			self.playAgain = playAgain;
 			//self.slotFull = slotFull;
 			//self.numSlot = numSlot;
 			//var test = ('../assets/alliMain.png');
@@ -63,8 +65,29 @@ angular
 
 
 
+			function syncWithFirebase() {
+				var ref = new Firebase('https://alliance-atac-horde.firebaseio.com/gameData');
+				var gameObject = $firebaseObject(ref);
+				// gameObject.test = true;
+				// gameObject.$save();
+				gameObject.slots = [];
+				gameObject.allianceScore = 0;
+				gameObject.hordeScore = 0;
 
-			function makeMove($index) {
+				for (var i = 0; i < 9; i++) 
+				{
+					gameObject.slots.push({numSlot:[i], allianceSlot:false, hordeSlot:false});
+
+				}
+
+			 gameObject.$loaded(function(){
+			 	gameObject.$save();
+			})
+			// gameObject.$save();
+			return gameObject;
+			}
+
+			function makeMove(slot) {
 
 				if (someoneWon === true) {
 					console.log('Game Over')
@@ -72,20 +95,22 @@ angular
 
 				else if (someoneWon === false) {
 
-					if (self.slots[$index].allianceSlot === true || self.slots[$index].hordeSlot === true) {
+					if (slot.allianceSlot === true || slot.hordeSlot === true) {
 						alert('Already made a move there buddy!');
 						return;
 					}
 
 					else if (self.counter % 2 === 0) {
-						self.slots[$index].allianceSlot = true;
+						slot.allianceSlot = true;
+						self.syncWithFirebase.$save();
 					}
 
 					else {
-						self.slots[$index].hordeSlot = true;
+						slot.hordeSlot = true;
+						self.syncWithFirebase.$save();
 					}
 					self.counter +=1;
-					self.getWinner($index);
+					self.getWinner(slot);
 				}
 
 
@@ -93,114 +118,146 @@ angular
 			//}; /*End of If / Else statement*/
 
 
-			function getWinner($index) {
+			function getWinner(slot) {
 
 
 				/*Alliance Win Logic*/
 
-				if (self.slots[0].allianceSlot === true && self.slots[1].allianceSlot === true && self.slots[2].allianceSlot === true)
+				if (self.syncWithFirebase.slots[0].allianceSlot === true && self.syncWithFirebase.slots[1].allianceSlot === true && self.syncWithFirebase.slots[2].allianceSlot === true)
+					{
+						console.log('Alliance Wins');
+						someoneWon = true;
+						self.allianceScore +=1;
+						self.syncWithFirebase.allianceScore += 1;
+						self.syncWithFirebase.$save();
+					}
+
+				else if (self.syncWithFirebase.slots[3].allianceSlot === true && self.syncWithFirebase.slots[4].allianceSlot === true && self.syncWithFirebase.slots[5].allianceSlot === true)
 					{
 						console.log('Alliance Wins');
 						someoneWon = true;
 						self.allianceScore += 1;
+						self.syncWithFirebase.allianceScore += 1;
+						self.syncWithFirebase.$save();
 					}
 
-				else if (self.slots[3].allianceSlot === true && self.slots[4].allianceSlot === true && self.slots[5].allianceSlot === true)
-					{
-						console.log('Alliance Wins');
-						someoneWon = true;
-						self.allianceScore += 1;
-					}
-
-				else if (self.slots[6].allianceSlot === true && self.slots[7].allianceSlot === true && self.slots[8].allianceSlot === true)
+				else if (self.syncWithFirebase.slots[6].allianceSlot === true && self.syncWithFirebase.slots[7].allianceSlot === true && self.syncWithFirebase.slots[8].allianceSlot === true)
 						{
 							console.log('Alliance Wins');
 							someoneWon = true;
 							self.allianceScore += 1;
+						self.syncWithFirebase.allianceScore += 1;
+						self.syncWithFirebase.$save();
 						}
-				else if (self.slots[0].allianceSlot === true && self.slots[3].allianceSlot === true && self.slots[6].allianceSlot === true)
+				else if (self.syncWithFirebase.slots[0].allianceSlot === true && self.syncWithFirebase.slots[3].allianceSlot === true && self.syncWithFirebase.slots[6].allianceSlot === true)
 					{
 						console.log('Alliance Wins');
 						someoneWon = true;
 						self.allianceScore += 1;
+						self.syncWithFirebase.allianceScore += 1;
+						self.syncWithFirebase.$save();
 					}
-				else if (self.slots[1].allianceSlot === true && self.slots[4].allianceSlot === true && self.slots[7].allianceSlot === true)
+				else if (self.syncWithFirebase.slots[1].allianceSlot === true && self.syncWithFirebase.slots[4].allianceSlot === true && self.syncWithFirebase.slots[7].allianceSlot === true)
 					{
 						console.log('Alliance Wins');
 						someoneWon = true;
 						self.allianceScore += 1;
+						self.syncWithFirebase.allianceScore += 1;
+						self.syncWithFirebase.$save();
 					}
-				else if (self.slots[2].allianceSlot === true && self.slots[5].allianceSlot === true && self.slots[8].allianceSlot === true)
+				else if (self.syncWithFirebase.slots[2].allianceSlot === true && self.syncWithFirebase.slots[5].allianceSlot === true && self.syncWithFirebase.slots[8].allianceSlot === true)
 					{
 						console.log('Alliance Wins');
 						someoneWon = true;
 						self.allianceScore += 1;
+						self.syncWithFirebase.allianceScore += 1;
+						self.syncWithFirebase.$save();
 					}
-				else if (self.slots[0].allianceSlot === true && self.slots[4].allianceSlot === true && self.slots[8].allianceSlot === true)
+				else if (self.syncWithFirebase.slots[0].allianceSlot === true && self.syncWithFirebase.slots[4].allianceSlot === true && self.syncWithFirebase.slots[8].allianceSlot === true)
 					{
 						console.log('Alliance Wins');
 						someoneWon = true;
 						self.allianceScore += 1;
+						self.syncWithFirebase.allianceScore += 1;
+						self.syncWithFirebase.$save();
 					}
-				else if (self.slots[2].allianceSlot === true && self.slots[4].allianceSlot === true && self.slots[6].allianceSlot === true)
+				else if (self.syncWithFirebase.slots[2].allianceSlot === true && self.syncWithFirebase.slots[4].allianceSlot === true && self.syncWithFirebase.slots[6].allianceSlot === true)
 					{
 						console.log('Alliance Wins');
 						someoneWon = true;
 						self.allianceScore += 1;
+						self.syncWithFirebase.allianceScore += 1;
+						self.syncWithFirebase.$save();
 					}
 
 
 					/*Horde Win Logic*/
 
-					else if (self.slots[0].hordeSlot === true && self.slots[1].hordeSlot === true && self.slots[2].hordeSlot === true)
+					else if (self.syncWithFirebase.slots[0].hordeSlot === true && self.syncWithFirebase.slots[1].hordeSlot === true && self.syncWithFirebase.slots[2].hordeSlot === true)
 						{
 							console.log('Horde Wins');
 							someoneWon = true;
 							self.hordeScore += 1;
+							self.syncWithFirebase.hordeScore += 1;
+							self.syncWithFirebase.$save();
 						}
 
-					else if (self.slots[3].hordeSlot === true && self.slots[4].hordeSlot === true && self.slots[5].hordeSlot === true)
+					else if (self.syncWithFirebase.slots[3].hordeSlot === true && self.syncWithFirebase.slots[4].hordeSlot === true && self.syncWithFirebase.slots[5].hordeSlot === true)
 						{
 							console.log('Horde Wins');
 							someoneWon = true;
 							self.hordeScore += 1;
+							self.syncWithFirebase.hordeScore += 1;
+							self.syncWithFirebase.$save();
 						}
 
-					else if (self.slots[6].hordeSlot === true && self.slots[7].hordeSlot === true && self.slots[8].hordeSlot === true)
+					else if (self.syncWithFirebase.slots[6].hordeSlot === true && self.syncWithFirebase.slots[7].hordeSlot === true && self.syncWithFirebase.slots[8].hordeSlot === true)
 							{
 								console.log('Horde Wins');
 								someoneWon = true;
 								self.hordeScore += 1;
+								self.syncWithFirebase.hordeScore += 1;
+								self.syncWithFirebase.$save();
 							}
-					else if (self.slots[0].hordeSlot === true && self.slots[3].hordeSlot === true && self.slots[6].hordeSlot === true)
+					else if (self.syncWithFirebase.slots[0].hordeSlot === true && self.syncWithFirebase.slots[3].hordeSlot === true && self.syncWithFirebase.slots[6].hordeSlot === true)
 						{
 							console.log('Horde Wins');
 							someoneWon = true;
 							self.hordeScore += 1;
+							self.syncWithFirebase.hordeScore += 1;
+							self.syncWithFirebase.$save();
 						}
-					else if (self.slots[1].hordeSlot === true && self.slots[4].hordeSlot === true && self.slots[7].hordeSlot === true)
+					else if (self.syncWithFirebase.slots[1].hordeSlot === true && self.syncWithFirebase.slots[4].hordeSlot === true && self.syncWithFirebase.slots[7].hordeSlot === true)
 						{
 							console.log('Horde Wins');
 							someoneWon = true;
 							self.hordeScore += 1;
+							self.syncWithFirebase.hordeScore += 1;
+							self.syncWithFirebase.$save();
 						}
-					else if (self.slots[2].hordeSlot === true && self.slots[5].hordeSlot === true && self.slots[8].hordeSlot === true)
+					else if (self.syncWithFirebase.slots[2].hordeSlot === true && self.syncWithFirebase.slots[5].hordeSlot === true && self.syncWithFirebase.slots[8].hordeSlot === true)
 						{
 							console.log('Horde Wins');
 							someoneWon = true;
 							self.hordeScore += 1;
+							self.syncWithFirebase.hordeScore += 1;
+							self.syncWithFirebase.$save();
 						}
-					else if (self.slots[0].hordeSlot === true && self.slots[4].hordeSlot === true && self.slots[8].hordeSlot === true)
+					else if (self.syncWithFirebase.slots[0].hordeSlot === true && self.syncWithFirebase.slots[4].hordeSlot === true && self.syncWithFirebase.slots[8].hordeSlot === true)
 						{
 							console.log('Horde Wins');
 							someoneWon = true;
 							self.hordeScore += 1;
+							self.syncWithFirebase.hordeScore += 1;
+							self.syncWithFirebase.$save();
 						}
-					else if (self.slots[2].hordeSlot === true && self.slots[4].hordeSlot === true && self.slots[6].hordeSlot === true)
+					else if (self.syncWithFirebase.slots[2].hordeSlot === true && self.syncWithFirebase.slots[4].hordeSlot === true && self.syncWithFirebase.slots[6].hordeSlot === true)
 						{
 							console.log('Horde Wins');
 							someoneWon = true;
 							self.hordeScore += 1;
+							self.syncWithFirebase.hordeScore += 1;
+							self.syncWithFirebase.$save();
 						}
 
 
@@ -226,6 +283,18 @@ angular
 			}
 
 
+
+			function playAgain() {
+				console.log('first');
+				for (var i = 0; i < 9; i++) 
+				{
+					self.syncWithFirebase.slots[i].allianceSlot = false
+					self.syncWithFirebase.slots[i].hordeSlot = false
+					someoneWon = false;
+
+				}
+				console.log('second');
+			}
 
 
 
